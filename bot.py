@@ -2,10 +2,7 @@ import time
 
 
 
-dict_users = [
-    {'name': 'Vlad', 'tel': '0959500000'},
-    {'name': 'Nika', 'tel': '0959500001'}
-]
+dict_users = {'Vlad': '0959500000', 'Nika': '0959500001'}
 
 
 def input_error(func_command):
@@ -37,9 +34,9 @@ def add(*args):
     """add NEW user and phonenumber"""
     name_user = args[0].title()
     phone_user = int(args[1])
-    new_user = {'name': name_user, 'tel': phone_user}
-    dict_users.append(new_user)
-    print(new_user)
+    # new_user = {'name': name_user, 'tel': phone_user}
+    dict_users[name_user] = phone_user
+    # print(new_user)
     return (f"\nThis command is ADD, name {name_user}, phone-number {phone_user}")
 
 
@@ -48,30 +45,27 @@ def change(*args):
     """change phonenumber for thisone user """
     name_user = args[0].title()
     phone_user = int(args[1])
-    for user in dict_users:
-        if name_user == user['name']:
-            user['tel'] = phone_user
-            print(user)
-    return (f"\nThis command is CHANGE, name {name_user}, NEW phone-number {phone_user}")
+    for name, phone in dict_users.items():
+        if name_user == name:
+            dict_users[name_user] = phone_user
+            return (f"\nThis command is CHANGE, name {name_user}, NEW phone-number {phone_user}")
+    return (f"\nThis command is CHANGE, I'm not find name {name_user}")
 
 
 @input_error
 def phone(*args):
     """show thisone user and phonenumber"""
     name_user = args[0].title()
-    for user in dict_users:
-        if name_user == user['name']:
-            print(f"User with name {name_user} have phone-number - {user['tel']}")
-            print(user)
-    return (f"\nThis command is PHONE, name {name_user}, phone-number {user['tel']}")
-
+    for name, phone in dict_users.items():
+        if name_user == name:
+            return (f"\nThis command is PHONE, User with name {name_user} have phone-number - {phone}")
+    return (f"\nThis command is PHONE, I'm not find name {name_user}")
 
 def show_all(*args):
     """show all users and phonenumbers"""
-    print('Ok! I show you all of I know.\nEnter password\n\n')
-    # time.sleep(3)
-    for user in dict_users:
-        print(f"\nUser name: {user['name']}  - phone number: {user['tel']}")
+    print('\n\nOk! I show you all of I know.\nEnter password')
+    time.sleep(3)
+    return (f"\nThis command is SHOW ALL, \n{dict_users}")
 
 
 def save_phonebook(*args):
@@ -94,7 +88,7 @@ def main():
         print('\nBot waiting ...')
         user_input = input('type command >>> ').lower()
         print('input done ... ', str(user_input))
-        if user_input == ".":
+        if user_input in (".", "good bye", "close", "exit"):
             time.sleep(1)
             print("\nI'll back!\n\n")
             time.sleep(1)
@@ -116,7 +110,7 @@ COMMANDS = {
     change: 'change',
     phone: 'phone',
     show_all: 'show_all',
-    save_phonebook: 'save'
+    save_phonebook: 'save',
 }
 
 if __name__ == '__main__':
